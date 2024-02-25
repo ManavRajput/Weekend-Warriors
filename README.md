@@ -7,9 +7,13 @@ HackMol 5.0 is a hackathon organized by NIT Jalandhar, bringing together talente
 This repository includes the following files related to our project:
 
 **index.html:** The main HTML file for our project.
+
 **style.css:** CSS file containing styles for the project.
+
 **script.js:** JavaScript file containing client-side scripting for the project.
+
 **actiondetection.ipynb:** contains al the python code for backend.
+
 **README.md:** This README file providing information about the project and its files.
 
 **Usage**
