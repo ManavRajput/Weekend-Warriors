@@ -23,3 +23,6 @@ Clone or download this repository to your local machine.
 
 Let's innovate together! 🚀🔥
 
+Note-: The backend is not connected with the frontend So use jupyter notebook for the testing  
+      Model = model.h5
+      Model_weight = model_weights.h5
