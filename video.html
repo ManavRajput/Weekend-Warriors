@@ -1,0 +1,318 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Video Recorder</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        background-color: #f0f0f0;
+        background-image: url('b.jpg');
+        
+    }
+
+    .container {
+        text-align: center;
+    }
+
+    #actionButton {
+        padding: 10px 20px;
+        font-size: 16px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    video {
+        width: 600px;
+        height: 400px;
+        margin-top: 20px;
+    }
+
+    #recordButton {
+       
+        padding: 10px 20px;
+        font-size: 16px;
+        background-color: #28a745;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        display: none;
+        position: absolute;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    #stopButton {
+        padding: 10px 20px;
+        font-size: 16px;
+        background-color: #dc3545;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        display: none;
+        margin-top: 10px;
+        position: absolute;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+    #videoContainer{
+        display: none;
+    }
+</style>
+</head>
+<body>
+
+<div class="container">
+    <center><button id="actionButton">Start Recording</button></center>
+    <video id="video" autoplay></video>
+    <button id="recordButton">Record</button>
+    <button id="stopButton">Stop</button>
+</div>
+
+<script>
+    let stream;
+    let mediaRecorder;
+    const videoElement = document.getElementById('video');
+    const actionButton = document.getElementById('actionButton');
+    const recordButton = document.getElementById('recordButton');
+    const stopButton = document.getElementById('stopButton');
+    
+
+
+    
+    async function startCamera() {
+        try {
+            stream = await navigator.mediaDevices.getUserMedia({ video: true });
+            videoElement.srcObject = stream;
+            recordButton.style.display = 'inline-block';
+        } catch (err) {
+            console.error('Error accessing camera: ', err);
+        }
+    }
+
+    
+    function handleDataAvailable(event) {
+        const recordedChunks = [];
+        if (event.data.size > 0) {
+            recordedChunks.push(event.data);
+            saveVideo(recordedChunks);
+        }
+    }
+
+    
+    function saveVideo(recordedChunks) {
+        const blob = new Blob(recordedChunks, {
+            type: 'video/webm'
+        });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        document.body.appendChild(a);
+        a.style = 'display: none';
+        a.href = url;
+        a.download = 'recorded-video.mp4';
+        a.click();
+        window.URL.revokeObjectURL(url);
+    }
+
+    // Event listener for action button click
+    actionButton.addEventListener('click', () => {
+        startCamera();
+    });
+
+    // Event listener for record button click
+    recordButton.addEventListener('click', () => {
+        mediaRecorder = new MediaRecorder(stream);
+        mediaRecorder.ondataavailable = handleDataAvailable;
+        mediaRecorder.start();
+        recordButton.style.display = 'none';
+        stopButton.style.display = 'inline-block';
+    });
+
+   
+    stopButton.addEventListener('click', () => {
+        mediaRecorder.stop();
+        stopButton.style.display = 'none';
+        recordButton.style.display = 'inline-block';
+    });
+   
+   
+</script>
+
+</body>
+</html> -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Video Recorder</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        background-color: #f0f0f0;
+        background-image: url('b.jpg');
+    }
+
+    .container {
+        text-align: center;
+    }
+
+    #actionButton {
+        padding: 10px 20px;
+        font-size: 16px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    video {
+        width: 600px;
+        height: 400px;
+        margin-top: 20px;
+        position: relative; /* Set video position to relative */
+    }
+
+    #recordButton {
+        padding: 10px 20px;
+        font-size: 16px;
+        background-color: #28a745;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        position: absolute;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    #stopButton {
+        padding: 10px 20px;
+        font-size: 16px;
+        background-color: #dc3545;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        display: none;
+        position: absolute;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    #videoContainer {
+        display: none;
+    }
+
+    .titleBox {
+        background-color: lightyellow;
+        padding: 10px;
+        border-radius: 5px;
+        margin-bottom: 20px;
+    }
+</style>
+</head>
+<body>
+
+<div class="container">
+    <div class="titleBox">
+        <h1 align="center">WEEKEND WARRIORS</h1>
+    </div>
+    <center><button id="actionButton">Start Recording</button></center>
+    <div id="videoContainer">
+        <video id="video" autoplay></video>
+        <button id="recordButton">Record</button>
+        <button id="stopButton">Stop</button>
+    </div>
+</div>
+
+<script>
+    let stream;
+    let mediaRecorder;
+    const videoElement = document.getElementById('video');
+    const actionButton = document.getElementById('actionButton');
+    const recordButton = document.getElementById('recordButton');
+    const stopButton = document.getElementById('stopButton');
+    const videoContainer = document.getElementById('videoContainer');
+
+    async function startCamera() {
+        try {
+            stream = await navigator.mediaDevices.getUserMedia({ video: true });
+            videoElement.srcObject = stream;
+            videoContainer.style.display = 'block'; // Show video container
+            actionButton.style.display = 'none'; // Hide action button
+            recordButton.style.display = 'inline-block'; // Show record button
+            recordButton.style.bottom = '20px'; // Place record button at the bottom
+        } catch (err) {
+            console.error('Error accessing camera: ', err);
+        }
+    }
+
+    function handleDataAvailable(event) {
+        const recordedChunks = [];
+        if (event.data.size > 0) {
+            recordedChunks.push(event.data);
+            saveVideo(recordedChunks);
+        }
+    }
+
+    function saveVideo(recordedChunks) {
+        const blob = new Blob(recordedChunks, {
+            type: 'video/webm'
+        });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        document.body.appendChild(a);
+        a.style = 'display: none';
+        a.href = url;
+        a.download = 'recorded-video.mp4';
+        a.click();
+        window.URL.revokeObjectURL(url);
+    }
+
+    // Event listener for action button click
+    actionButton.addEventListener('click', () => {
+        startCamera();
+    });
+
+    // Event listener for record button click
+    recordButton.addEventListener('click', () => {
+        mediaRecorder = new MediaRecorder(stream);
+        mediaRecorder.ondataavailable = handleDataAvailable;
+        mediaRecorder.start();
+        recordButton.style.display = 'none';
+        stopButton.style.display = 'inline-block';
+    });
+
+    // Event listener for stop button click
+    stopButton.addEventListener('click', () => {
+        mediaRecorder.stop();
+        stopButton.style.display = 'none';
+        recordButton.style.display = 'inline-block';
+    });
+</script>
+
+</body>
+</html>
